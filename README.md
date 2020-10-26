@@ -1,4 +1,5 @@
-# MeTAPyquod
+# MeTAPyquod 
+[Proposal PDF](https://github.com/SphtKr/MeTAPyquod/blob/main/MeTAPyquod_Proposal_20201025.pdf)
 ## Containerized metapy Appliances
 
 The object of this project is to simplify the use of MeTA and the metapy bindings by creating pre-packaged docker containers ready to use with all dependencies for different use cases. The result will be at least the following two reusable containers:
@@ -7,7 +8,7 @@ This container will contain the metapy libraries and a functional development en
 ### `metapyquod-server`
 This container will provide a simple search engine core as a microservice behind a REST API. The goal is for this container to be capable enough to serve in basic production use as a simple search appliance, for instance in an intranet search scenario. It will also facilitate experimentation with different metapy components in a real world use case. The search service will be intended for use with English language corpora.
 
-This container will expose a Volume where it expects to find a web mirror filesystem structure according to the conventions produced by the wget spider process. This will allow the user to use the basic but flexible wget tool (likely in another container) to crawl and download web content for ingest by the metapyquod-server appliance. Since wget supports timestamping of downloaded files (and requery culling based on Last-Modified headers, the appliance will monitor the Volume for newly modified files, gaining some efficiencies.
+This container will expose a Volume where it expects to find a web mirror filesystem structure according to the conventions produced by the [wget spider](https://www.gnu.org/software/wget/manual/html_node/Recursive-Download.html#Recursive-Download) process. This will allow the user to use the basic but flexible wget tool (likely in another container) to crawl and download web content for ingest by the metapyquod-server appliance. Since wget [supports timestamping](https://www.gnu.org/software/wget/manual/html_node/Time_002dStamping.html#Time_002dStamping) of downloaded files (and requery culling based on Last-Modified headers, the appliance will monitor the Volume for newly modified files, gaining some efficiencies.
 
 In addition to providing sane defaults, this container will also expose a volume with configuration control data (e.g. a config.toml or other relevant files) to facilitate customization of or experimentation with the search appliance.
 
