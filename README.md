@@ -1,5 +1,7 @@
 # MeTAPyquod 
-[Proposal PDF](https://github.com/SphtKr/MeTAPyquod/blob/main/MeTAPyquod_Proposal_20201025.pdf)
+* [Proposal PDF](https://github.com/SphtKr/MeTAPyquod/blob/main/MeTAPyquod_Proposal_20201025.pdf)
+* Participants:
+  * mdw8 (Lead/Captain)
 ## Containerized metapy Appliances
 
 The object of this project is to simplify the use of MeTA and the metapy bindings by creating pre-packaged docker containers ready to use with all dependencies for different use cases. The result will be at least the following two reusable containers:
