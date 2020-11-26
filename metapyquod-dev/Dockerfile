@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 RUN apt-get install bash git
 ENV PATH="/root/.local/bin:${PATH}"
-RUN pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose pytoml metapy
+RUN pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose pytoml metapy web-pdb
 COPY requirements.txt ./
 COPY dot-jupyter /root/.jupyter
 RUN pip install --no-cache-dir -r requirements.txt
@@ -12,5 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 #COPY . .
 
 EXPOSE 8888/tcp
+EXPOSE 5555/tcp
 
 CMD [ "/bin/bash" ]
