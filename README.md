@@ -1,5 +1,6 @@
 # MeTAPyquod 
 * [Proposal PDF](https://github.com/SphtKr/MeTAPyquod/blob/main/MeTAPyquod_Proposal_20201025.pdf)
+* [Progress Report PDF](https://github.com/SphtKr/MeTAPyquod/blob/main/MeTAPyquod_Progress_20201127.pdf)
 * Participants:
   * mdw8 (Lead/Captain)
 ## Containerized metapy Appliances
