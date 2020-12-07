@@ -43,19 +43,21 @@ def main():
 
                     doc = ScrapedDocument(f, None, mtime, url)
                     doc_num += 1
-                    print(doc_num)
+                    #print(doc_num)
 
                     #DELETE ME!
-                    if doc_num > 100:
-                        continue
+                    #if doc_num > 183:
+                    #    break
 
                     if(m == "text/html"):
                         doc = slurp_html(fullpath, doc)
 
+                    #print(doc.title, doc.url, doc.mtime, doc.text)
+
                     if(not(doc.text is None)):
                         sham_dat.write(doc.text)
                         sham_dat.write('\n')
-                        sham_md.write('\t'.join([doc.title.replace('\t',' '), doc.url, str(doc.mtime)]))
+                        sham_md.write('\t'.join([re.sub('\s+',' ',doc.title), doc.url, str(doc.mtime)]))
                         sham_md.write('\n')
 
     cleanup_sham_corpus(corpus_id)
@@ -64,34 +66,37 @@ def main():
 def make_sham_corpus(id: str='sham'):
     sham_path = os.path.join("/tmp",id)
 
-    sham_main_toml = """prefix = "%s"
-stop-words = "%s/lemur-stopwords.txt"
+    sham_main_toml = """prefix = "."
+stop-words = "./lemur-stopwords.txt"
 dataset = "%s"
 corpus = "line.toml"
-index = "%s/idx"
+index = "./idx"
+metadata = [{name = "title", type = "string"},
+    {name = "url", type = "string"},
+    {name = "mtime", type = "uint"}]
 
 [[analyzers]]
 method = "ngram-word"
 ngram = 1
 filter = "default-unigram-chain"
-"""%(sham_path,sham_path,id,sham_path)
+"""%(id)
 
     sham_line_toml = """type = "line-corpus"
 encoding = "utf-8"
 metadata = [{name = "title", type = "string"},
     {name = "url", type = "string"},
-    {name = "mtime", type = "uint"}]"""
+    {name = "mtime", type = "uint"}]
+"""
 
     sham_main_toml_path = os.path.join(sham_path, "%s.toml"%(id))
     sham_line_toml_path = os.path.join(sham_path, id, "line.toml")
-    sham_dat_path = os.path.join(sham_path, "%s.dat"%(id))
-    sham_md_path = os.path.join(sham_path, "metadata.dat")
+    sham_dat_path = os.path.join(sham_path, id, "%s.dat"%(id))
+    sham_md_path = os.path.join(sham_path, id, "metadata.dat")
 
     os.mkdir(sham_path)
     os.mkdir(os.path.join(sham_path, id))
     with open(sham_main_toml_path,'w') as f:
         f.write(sham_main_toml)
-        f.writelines(["dataset = \"%s\"\n"%(id),"corpus = \"line.toml\"\n","index = \"./data/idx\"\n"])
         f.write('\n')
 
     with open(sham_line_toml_path,'w') as f:
@@ -112,8 +117,11 @@ def cleanup_sham_corpus(id: str='sham'):
     sham_dat_path = os.path.join(sham_path, "%s.dat"%(id))
     sham_md_path = os.path.join(sham_path, "metadata.dat")
     
+    oldpath = os.getcwd()
+    os.chdir(sham_path)
     index.make_inverted_index(sham_main_toml_path)
-    
+    os.chdir(oldpath)
+
     #os.remove(sham_md_path)
     #os.remove(sham_dat_path)
     #os.remove(sham_line_toml_path)
