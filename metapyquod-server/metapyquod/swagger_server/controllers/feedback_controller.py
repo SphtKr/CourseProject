@@ -5,7 +5,7 @@ from connexion.lifecycle import ConnexionResponse
 import metapy
 
 from swagger_server import util
-#from swagger_server import appEngine
+from swagger_server import mainEngine
 
 
 def click_get(query, url):  # noqa: E501
@@ -21,8 +21,7 @@ def click_get(query, url):  # noqa: E501
     :rtype: None
     """
 
-    idx = metapy.index.make_inverted_index("./config.toml")
-    url = idx.metadata(idx.docs()[int(url)]).get("url")
+    url = mainEngine.get_metadata_for_doc_id(url).get("url")
 
     #FIXME: Validate that URL is something from the index metadata!
     response = ConnexionResponse(status_code=302, headers={'Location': url}) #,"X-Debug": r[0]["url"]})

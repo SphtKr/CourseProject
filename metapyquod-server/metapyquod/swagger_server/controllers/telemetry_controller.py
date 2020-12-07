@@ -6,7 +6,7 @@ import metapy
 from swagger_server.models.query_result import QueryResult  # noqa: E501
 from swagger_server.models.stats_result import StatsResult  # noqa: E501
 from swagger_server import util
-
+from swagger_server import mainEngine
 
 def telemetry_recent_get():  # noqa: E501
     """Get the most recently indexed documents.
@@ -27,7 +27,7 @@ def telemetry_stats_get():  # noqa: E501
 
     :rtype: StatsResult
     """
-    idx = metapy.index.make_inverted_index("./config.toml")
-    model = StatsResult(num_docs= idx.num_docs(), num_terms= idx.unique_terms(), disk_size= 0)
+    statsDict = mainEngine.get_stats()
+    model = StatsResult(num_docs= statsDict['num_docs'], num_terms= statsDict['num_terms'], disk_size= statsDict['disk_size'])
 
     return model
