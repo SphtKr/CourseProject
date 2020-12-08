@@ -24,6 +24,10 @@ def main():
 
     sham_dat_path,sham_md_path = make_sham_corpus(corpus_id)
 
+    # Hmm... Note to self: If you want to try to be fancy with FIFOs here, be
+    # sure to fork the child process *before* opening the filehandle, or 
+    # apparently the child process will inherit the writable handle and the
+    # FIFO will never close/run dry... essentially a form of deadlock.
     with open(sham_dat_path,'w') as sham_dat, open(sham_md_path,'w') as sham_md:
         doc_num = 0
         for protocol in os.listdir(args.mirror_path):
