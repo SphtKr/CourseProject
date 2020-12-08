@@ -206,6 +206,7 @@ components:
       example:
         score: 6.027456183070403
         doc_id: 0
+        title: Vowels of the World
         url: http://example.com/aeiou
     StatsResult:
       type: object
