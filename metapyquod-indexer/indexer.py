@@ -60,7 +60,7 @@ def main():
                         sham_md.write('\t'.join([re.sub('\s+',' ',doc.title), doc.url, str(doc.mtime)]))
                         sham_md.write('\n')
 
-    cleanup_sham_corpus(corpus_id)
+    cleanup_sham_corpus(corpus_id, args.dest_path)
 
 
 def make_sham_corpus(id: str='sham'):
@@ -110,20 +110,30 @@ metadata = [{name = "title", type = "string"},
     return sham_dat_path,sham_md_path
     #with open(sham_dat_path,'w') as sham_dat, open(sham_md_path,'w') as sham_md:
 
-def cleanup_sham_corpus(id: str='sham'):
+def cleanup_sham_corpus(id: str='sham', dest: str=None):
     sham_path = os.path.join("/tmp",id)
     sham_main_toml_path = os.path.join(sham_path, "%s.toml"%(id))
-    sham_line_toml_path = os.path.join(sham_path, "line.toml")
-    sham_dat_path = os.path.join(sham_path, "%s.dat"%(id))
-    sham_md_path = os.path.join(sham_path, "metadata.dat")
+    sham_line_toml_path = os.path.join(sham_path, id, "line.toml")
+    sham_dat_path = os.path.join(sham_path, id, "%s.dat"%(id))
+    sham_md_path = os.path.join(sham_path, id, "metadata.dat")
     
     oldpath = os.getcwd()
     os.chdir(sham_path)
     index.make_inverted_index(sham_main_toml_path)
     os.chdir(oldpath)
 
-    #os.remove(sham_md_path)
-    #os.remove(sham_dat_path)
+    with open(sham_main_toml_path,'r') as f:
+        config_toml = ''.join(f.readlines())
+    config_toml = re.sub('(prefix|index|stop-words) = ".', "\\1 = \"%s"%(dest), config_toml)
+    
+    os.remove(sham_main_toml_path)
+    os.remove(sham_md_path)
+    os.remove(sham_dat_path)
+    shutil.move(sham_path, dest)
+
+    with open(os.path.join(dest,"config.toml"),'w') as f:
+        f.write(config_toml)
+
     #os.remove(sham_line_toml_path)
     #os.remove(sham_main_toml_path)
     #os.rmdir(sham_path)
@@ -146,6 +156,10 @@ def init_argparse() -> argparse.ArgumentParser:
         metavar='dest',
         type=str,
         help='The directory location into which the created index will be stored.')
+    parser.add_argument('-i',
+        '--id',
+        type=str,
+        help='The identifier for the index.')
     return parser
 
 def slurp_html(path: str=None, doc: ScrapedDocument=None):
