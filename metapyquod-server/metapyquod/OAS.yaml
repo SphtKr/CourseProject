@@ -89,7 +89,7 @@ paths:
           content: {}
       x-swagger-router-controller: "metapyquod.web.controllers.search_controller"
 
-  /click/{query}/{url}:
+  /click/{query}/{doc_id}:
     get:
       tags:
       - feedback
@@ -104,9 +104,9 @@ paths:
         explode: false
         schema:
           type: string
-      - name: url
+      - name: doc_id
         in: path
-        description: URL of selected result
+        description: The doc_id (from a QueryResult) of the selected result 
         required: true
         style: simple
         explode: false
@@ -125,22 +125,22 @@ paths:
           content: {}
       x-swagger-router-controller: "metapyquod.web.controllers.feedback_controller"
 
-  /telemetry/recent:
-    get:
-      tags:
-      - telemetry
-      summary: Get the most recently indexed documents.
-      operationId: telemetryRecentGet
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/QueryResult'
-      x-swagger-router-controller: "metapyquod.web.controllers.telemetry_controller"
+  #/telemetry/recent:
+  #  get:
+  #    tags:
+  #    - telemetry
+  #    summary: Get the most recently indexed documents.
+  #    operationId: telemetryRecentGet
+  #    responses:
+  #      200:
+  #        description: successful operation
+  #        content:
+  #          application/json:
+  #            schema:
+  #              type: array
+  #              items:
+  #                $ref: '#/components/schemas/QueryResult'
+  #    x-swagger-router-controller: "metapyquod.web.controllers.telemetry_controller"
 
   /telemetry/stats:
     get:
@@ -205,7 +205,7 @@ components:
           type: integer
           format: int64
           description: The number of terms currently in the index
-        disk_size:
-          type: integer
-          format: int64
-          description: Size of the index in bytes
+        #disk_size:
+        #  type: integer
+        #  format: int64
+        #  description: Size of the index in bytes

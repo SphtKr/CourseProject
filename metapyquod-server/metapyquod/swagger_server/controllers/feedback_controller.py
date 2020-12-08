@@ -8,10 +8,8 @@ from swagger_server import util
 from swagger_server import mainEngine
 
 
-def click_get(query, url):  # noqa: E501
+def click_get(query, doc_id):  # noqa: E501
     """Click-through redirector for capturing implicit feedback
-
-     # noqa: E501
 
     :param query: Original query content
     :type query: str
@@ -21,7 +19,7 @@ def click_get(query, url):  # noqa: E501
     :rtype: None
     """
 
-    url = mainEngine.get_metadata_for_doc_id(url).get("url")
+    url = mainEngine.get_metadata_for_doc_id(doc_id).get("url")
 
     #FIXME: Validate that URL is something from the index metadata!
     response = ConnexionResponse(status_code=302, headers={'Location': url}) #,"X-Debug": r[0]["url"]})

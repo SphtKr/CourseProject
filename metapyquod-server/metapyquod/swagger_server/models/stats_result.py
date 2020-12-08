@@ -14,30 +14,25 @@ class StatsResult(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, num_docs: int=None, num_terms: int=None, disk_size: int=None):  # noqa: E501
+    def __init__(self, num_docs: int=None, num_terms: int=None):  # noqa: E501
         """StatsResult - a model defined in Swagger
 
         :param num_docs: The num_docs of this StatsResult.  # noqa: E501
         :type num_docs: int
         :param num_terms: The num_terms of this StatsResult.  # noqa: E501
         :type num_terms: int
-        :param disk_size: The disk_size of this StatsResult.  # noqa: E501
-        :type disk_size: int
         """
         self.swagger_types = {
             'num_docs': int,
-            'num_terms': int,
-            'disk_size': int
+            'num_terms': int
         }
 
         self.attribute_map = {
             'num_docs': 'num_docs',
-            'num_terms': 'num_terms',
-            'disk_size': 'disk_size'
+            'num_terms': 'num_terms'
         }
         self._num_docs = num_docs
         self._num_terms = num_terms
-        self._disk_size = disk_size
 
     @classmethod
     def from_dict(cls, dikt) -> 'StatsResult':
@@ -95,26 +90,3 @@ class StatsResult(Model):
         """
 
         self._num_terms = num_terms
-
-    @property
-    def disk_size(self) -> int:
-        """Gets the disk_size of this StatsResult.
-
-        Size of the index in bytes  # noqa: E501
-
-        :return: The disk_size of this StatsResult.
-        :rtype: int
-        """
-        return self._disk_size
-
-    @disk_size.setter
-    def disk_size(self, disk_size: int):
-        """Sets the disk_size of this StatsResult.
-
-        Size of the index in bytes  # noqa: E501
-
-        :param disk_size: The disk_size of this StatsResult.
-        :type disk_size: int
-        """
-
-        self._disk_size = disk_size

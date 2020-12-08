@@ -95,7 +95,7 @@ paths:
           content: {}
       x-swagger-router-controller: metapyquod.web.controllers.search_controller
       x-openapi-router-controller: swagger_server.controllers.search_controller
-  /click/{query}/{url}:
+  /click/{query}/{doc_id}:
     get:
       tags:
       - feedback
@@ -110,9 +110,9 @@ paths:
         explode: false
         schema:
           type: string
-      - name: url
+      - name: doc_id
         in: path
-        description: URL of selected result
+        description: The doc_id (from a QueryResult) of the selected result
         required: true
         style: simple
         explode: false
@@ -133,24 +133,6 @@ paths:
           content: {}
       x-swagger-router-controller: metapyquod.web.controllers.feedback_controller
       x-openapi-router-controller: swagger_server.controllers.feedback_controller
-  /telemetry/recent:
-    get:
-      tags:
-      - telemetry
-      summary: Get the most recently indexed documents.
-      operationId: telemetry_recent_get
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/QueryResult'
-                x-content-type: application/json
-      x-swagger-router-controller: metapyquod.web.controllers.telemetry_controller
-      x-openapi-router-controller: swagger_server.controllers.telemetry_controller
   /telemetry/stats:
     get:
       tags:
@@ -219,12 +201,7 @@ components:
           type: integer
           description: The number of terms currently in the index
           format: int64
-        disk_size:
-          type: integer
-          description: Size of the index in bytes
-          format: int64
       example:
         num_docs: 0
         num_terms: 6
-        disk_size: 1
 

@@ -12,8 +12,6 @@ import swagger_server.engine
 def search_get(query, top=None, skip=None):  # noqa: E501
     """Retrieve results for a given query
 
-     # noqa: E501
-
     :param query: Query content
     :type query: str
     :param top: Return this many results (pagination)
@@ -32,8 +30,6 @@ def search_get(query, top=None, skip=None):  # noqa: E501
 
 def search_post(body):  # noqa: E501
     """Retrieve results for a given query
-
-     # noqa: E501
 
     :param body: Search parameters
     :type body: dict | bytes
