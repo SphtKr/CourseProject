@@ -1,7 +1,7 @@
 import os
 import metapy
 import pytoml
-#from metapy import index
+from metapy import index
 
 class Engine:
     __ranker = None
@@ -13,24 +13,24 @@ class Engine:
         with open(configPath, 'rb') as fin:
             self.__config = pytoml.load(fin)
 
-        self.__idx = metapy.index.make_inverted_index(configPath)
+        self.__idx = index.make_inverted_index(configPath)
 
         mconfig = self.__config['metadata']
         self.__metadataDef = mconfig
 
-        rconfig = self.__config['ranker']
-        #TODO: There is no python binding for make_ranker for use with toml... reimplementing this would be straightforward but nontrivial. Just make a BM25 for now.
-        if rconfig["method"] == "bm25":
+        #TODO: There is no python binding for make_ranker for use with toml... reimplementing this would be straightforward but nontrivial. Just handle BM25 for now.
+        rconfig = self.__config.get('ranker', {'method':'bm25'})
+        if rconfig.get('method','bm25') == "bm25":
             k1 = rconfig.get("k1", 1.2)
             b = rconfig.get("b", 0.75)
             k3 = rconfig.get("k3", 500)
-            self.__ranker = metapy.index.OkapiBM25(k1, b, k3)
+            self.__ranker = index.OkapiBM25(k1, b, k3)
         else:
-            self.__ranker = metapy.index.OkapiBM25()
+            self.__ranker = index.OkapiBM25()
     
     def query(self, query: str=None, skip: int=0, top: int=10):
         #idx = metapy.index.make_inverted_index("./config.toml")
-        qdoc = metapy.index.Document()
+        qdoc = index.Document()
         qdoc.content(query)
         ranking = self.__ranker.score(self.__idx, qdoc, skip + top)[skip:]
         
