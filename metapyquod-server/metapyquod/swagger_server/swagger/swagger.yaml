@@ -56,8 +56,8 @@ paths:
         in: path
         description: Query content
         required: true
-        style: label
-        explode: true
+        style: simple
+        explode: false
         schema:
           type: string
       - name: top
@@ -106,16 +106,16 @@ paths:
         in: path
         description: Original query content
         required: true
-        style: label
-        explode: true
+        style: simple
+        explode: false
         schema:
           type: string
       - name: url
         in: path
         description: URL of selected result
         required: true
-        style: label
-        explode: true
+        style: simple
+        explode: false
         schema:
           type: string
       responses:
