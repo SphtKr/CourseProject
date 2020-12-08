@@ -1,8 +1,10 @@
 openapi: 3.0.1
 info:
   title: MeTAPyquod Server
-  description: This is an example search service implemented with the MeTA toolkit
-    and metapy bindings.
+  description: 'This is an example search service implemented with the MeTA toolkit and metapy bindings.'
+  #termsOfService: http://...
+  #contact:
+  #  email: apiteam@swagger.io
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -21,7 +23,7 @@ paths:
       tags:
       - search
       summary: Retrieve results for a given query
-      operationId: search_post
+      operationId: searchPost
       requestBody:
         description: Search parameters
         content:
@@ -30,7 +32,7 @@ paths:
               $ref: '#/components/schemas/QueryParams'
         required: true
       responses:
-        "200":
+        200:
           description: successful operation
           content:
             application/json:
@@ -38,19 +40,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/QueryResult'
-                x-content-type: application/json
-        "405":
+        405:
           description: Invalid input
           content: {}
       x-codegen-request-body-name: body
-      x-swagger-router-controller: metapyquod.web.controllers.search_controller
-      x-openapi-router-controller: swagger_server.controllers.search_controller
+      x-swagger-router-controller: "metapyquod.web.controllers.search_controller"
+
   /search/{query}:
     get:
       tags:
       - search
       summary: Retrieve results for a given query
-      operationId: search_get
+      operationId: searchGet
       parameters:
       - name: query
         in: path
@@ -63,25 +64,19 @@ paths:
       - name: top
         in: query
         description: Return this many results (pagination)
-        required: false
-        style: form
-        explode: true
         schema:
-          minimum: 1
           type: integer
+          minimum: 1
           default: 10
       - name: skip
         in: query
         description: Skip this many results (pagination)
-        required: false
-        style: form
-        explode: true
         schema:
-          minimum: 0
           type: integer
+          minimum: 0
           default: 0
       responses:
-        "200":
+        200:
           description: successful operation
           content:
             application/json:
@@ -89,18 +84,17 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/QueryResult'
-                x-content-type: application/json
-        "400":
+        400:
           description: Invalid query
           content: {}
-      x-swagger-router-controller: metapyquod.web.controllers.search_controller
-      x-openapi-router-controller: swagger_server.controllers.search_controller
+      x-swagger-router-controller: "metapyquod.web.controllers.search_controller"
+
   /click/{query}/{url}:
     get:
       tags:
       - feedback
       summary: Click-through redirector for capturing implicit feedback
-      operationId: click_get
+      operationId: clickGet
       parameters:
       - name: query
         in: path
@@ -119,28 +113,26 @@ paths:
         schema:
           type: string
       responses:
-        "302":
+        302:
           description: successful operation
           headers:
             Location:
-              description: The destination URL
-              style: simple
-              explode: false
-              schema:
+              schema: 
                 type: string
-        "400":
+              description: The destination URL
+        400:
           description: Invalid query or URL
           content: {}
-      x-swagger-router-controller: metapyquod.web.controllers.feedback_controller
-      x-openapi-router-controller: swagger_server.controllers.feedback_controller
+      x-swagger-router-controller: "metapyquod.web.controllers.feedback_controller"
+
   /telemetry/recent:
     get:
       tags:
       - telemetry
       summary: Get the most recently indexed documents.
-      operationId: telemetry_recent_get
+      operationId: telemetryRecentGet
       responses:
-        "200":
+        200:
           description: successful operation
           content:
             application/json:
@@ -148,24 +140,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/QueryResult'
-                x-content-type: application/json
-      x-swagger-router-controller: metapyquod.web.controllers.telemetry_controller
-      x-openapi-router-controller: swagger_server.controllers.telemetry_controller
+      x-swagger-router-controller: "metapyquod.web.controllers.telemetry_controller"
+
   /telemetry/stats:
     get:
       tags:
       - telemetry
       summary: Get statistics about the search index.
-      operationId: telemetry_stats_get
+      operationId: telemetryStatsGet
       responses:
-        "200":
+        200:
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatsResult'
-      x-swagger-router-controller: metapyquod.web.controllers.telemetry_controller
-      x-openapi-router-controller: swagger_server.controllers.telemetry_controller
+      x-swagger-router-controller: "metapyquod.web.controllers.telemetry_controller"
+                
 components:
   schemas:
     QueryParams:
@@ -176,14 +167,14 @@ components:
           description: Query content
         top:
           type: integer
-          description: Return this many results (pagination)
           format: int32
           default: 10
+          description: Return this many results (pagination)
         skip:
           type: integer
-          description: Skip this many results (pagination)
           format: int32
           default: 0
+          description: Skip this many results (pagination)
       xml:
         name: Order
     QueryResult:
@@ -191,40 +182,30 @@ components:
       properties:
         doc_id:
           type: integer
-          description: The internal index document ID
           format: int64
+          description: The internal index document ID
         url:
           type: string
-          description: The URL of the page matching the query
           format: url
+          description: The URL of the page matching the query
         score:
           type: number
           description: Score assigned for the document by the ranker
         title:
           type: string
           description: A title (e.g. from an HTML document) or other derived label
-      example:
-        score: 6.027456183070403
-        title: title
-        doc_id: 0
-        url: http://example.com/aeiou
     StatsResult:
       type: object
       properties:
         num_docs:
           type: integer
-          description: The number of documents currently in the index
           format: int64
+          description: The number of documents currently in the index
         num_terms:
           type: integer
-          description: The number of terms currently in the index
           format: int64
+          description: The number of terms currently in the index
         disk_size:
           type: integer
-          description: Size of the index in bytes
           format: int64
-      example:
-        num_docs: 0
-        num_terms: 6
-        disk_size: 1
-
+          description: Size of the index in bytes
