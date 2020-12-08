@@ -42,4 +42,9 @@ def search_post(body):  # noqa: E501
     """
     if connexion.request.is_json:
         body = QueryParams.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    
+    resultDicts = mainEngine.query(body.query, body.skip, body.top)
+    result = []
+    for r in resultDicts:
+        result.append(QueryResult(doc_id= r["doc_id"], url= r["metadata"]["url"], score= r["score"], title=r["metadata"]["title"]))
+    return result
