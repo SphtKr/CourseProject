@@ -34,6 +34,8 @@ class Engine:
         qdoc.content(query)
         ranking = self.__ranker.score(self.__idx, qdoc, skip + top)[skip:]
         
+        dsid = self.__config["dataset"]
+
         results = []
         for r in ranking:
             mdata = self.__idx.metadata(r[0])
@@ -41,15 +43,17 @@ class Engine:
             for f in self.__metadataDef:
                 mdict[f['name']] = mdata.get(f['name'])
             results.append({
-                "doc_id": str(r[0]),
+                "doc_id": '.'.join([dsid, str(r[0])]),
                 "score": r[1],
                 "metadata": mdict,
             })
 
         return results
     
-    def get_metadata_for_doc_id(self, n: str=""):
-        doc = self.__idx.docs()[int(n)] #FIXME: This seems very bad for performance, no? Better way?
+    def get_metadata_for_doc_id(self, doc_id: str=""):
+        # So far we only support one concurrent index, so just throw away the dataset identifier...
+        n = int(doc_id.split('.')[1])
+        doc = self.__idx.docs()[n] #FIXME: This seems very bad for performance, no? Better way?
         mdata = self.__idx.metadata(doc)
         return mdata
 
