@@ -129,7 +129,7 @@ paths:
               schema:
                 type: string
         "400":
-          description: Invalid query or URL
+          description: Invalid query or doc_id value
           content: {}
       x-swagger-router-controller: metapyquod.web.controllers.feedback_controller
       x-openapi-router-controller: swagger_server.controllers.feedback_controller

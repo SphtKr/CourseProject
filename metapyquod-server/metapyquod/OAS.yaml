@@ -121,7 +121,7 @@ paths:
                 type: string
               description: The destination URL
         400:
-          description: Invalid query or URL
+          description: Invalid query or doc_id value
           content: {}
       x-swagger-router-controller: "metapyquod.web.controllers.feedback_controller"
 
