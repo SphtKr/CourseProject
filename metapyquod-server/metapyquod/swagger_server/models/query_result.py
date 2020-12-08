@@ -14,7 +14,7 @@ class QueryResult(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, doc_id: int=None, url: str=None, score: float=None):  # noqa: E501
+    def __init__(self, doc_id: int=None, url: str=None, score: float=None, title: str=None):  # noqa: E501
         """QueryResult - a model defined in Swagger
 
         :param doc_id: The doc_id of this QueryResult.  # noqa: E501
@@ -23,21 +23,26 @@ class QueryResult(Model):
         :type url: str
         :param score: The score of this QueryResult.  # noqa: E501
         :type score: float
+        :param title: The title of this QueryResult.  # noqa: E501
+        :type title: str
         """
         self.swagger_types = {
             'doc_id': int,
             'url': str,
-            'score': float
+            'score': float,
+            'title': str
         }
 
         self.attribute_map = {
             'doc_id': 'doc_id',
             'url': 'url',
-            'score': 'score'
+            'score': 'score',
+            'title': 'title'
         }
         self._doc_id = doc_id
         self._url = url
         self._score = score
+        self._title = title
 
     @classmethod
     def from_dict(cls, dikt) -> 'QueryResult':
@@ -118,3 +123,26 @@ class QueryResult(Model):
         """
 
         self._score = score
+
+    @property
+    def title(self) -> str:
+        """Gets the title of this QueryResult.
+
+        A title (e.g. from an HTML document) or other derived label  # noqa: E501
+
+        :return: The title of this QueryResult.
+        :rtype: str
+        """
+        return self._title
+
+    @title.setter
+    def title(self, title: str):
+        """Sets the title of this QueryResult.
+
+        A title (e.g. from an HTML document) or other derived label  # noqa: E501
+
+        :param title: The title of this QueryResult.
+        :type title: str
+        """
+
+        self._title = title

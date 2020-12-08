@@ -200,6 +200,9 @@ components:
         score:
           type: number
           description: Score assigned for the document by the ranker
+        title:
+          type: string
+          description: A title (e.g. from an HTML document) or other derived label
       example:
         score: 6.027456183070403
         doc_id: 0

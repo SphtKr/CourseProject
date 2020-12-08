@@ -26,7 +26,7 @@ def search_get(query, top=None, skip=None):  # noqa: E501
     resultDicts = mainEngine.query(query, skip, top)
     result = []
     for r in resultDicts:
-        result.append(QueryResult(doc_id= r["doc_id"], url= r["metadata"]["url"], score= r["score"]))
+        result.append(QueryResult(doc_id= r["doc_id"], url= r["metadata"]["url"], score= r["score"], title=r["metadata"]["title"]))
     return result
 
 
