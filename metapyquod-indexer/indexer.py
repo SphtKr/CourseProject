@@ -20,7 +20,7 @@ def main():
     parser = init_argparse()
     args = parser.parse_args()
 
-    corpus_id = 'sham' #TODO: Get id from args
+    corpus_id = re.sub('[^a-zA-Z0-9_-]','_', args.identifier) #TODO: Get id from args
 
     sham_dat_path,sham_md_path = make_sham_corpus(corpus_id)
 
@@ -141,7 +141,7 @@ def cleanup_sham_corpus(id: str='sham', dest: str=None):
 
 def init_argparse() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        usage="%(prog)s [OPTION] mirrorpath destination",
+        usage="%(prog)s [OPTION] mirrorpath dest",
         description="Build MeTA indexes from wget mirrors."
     )
     parser.add_argument(
@@ -157,9 +157,10 @@ def init_argparse() -> argparse.ArgumentParser:
         type=str,
         help='The directory location into which the created index will be stored.')
     parser.add_argument('-i',
-        '--id',
+        '--identifier',
         type=str,
-        help='The identifier for the index.')
+        default="dataset",
+        help='The identifier for the index. Default is "dataset"')
     return parser
 
 def slurp_html(path: str=None, doc: ScrapedDocument=None):
