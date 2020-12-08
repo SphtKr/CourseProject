@@ -4,9 +4,9 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 RUN apt-get update &&\
-    apt-get install -y bash git gfortran libgfortran5 libopenblas-base libopenblas-dev cmake &&\
+    apt-get install -y cmake &&\
     apt-get clean
-RUN pip install numpy scipy matplotlib pandas sympy nose pytoml &&\
+RUN pip install nose pytoml &&\
     rm -Rf /root/.cache
 RUN git clone --recurse-submodules https://github.com/meta-toolkit/metapy.git /tmp/metapy-src &&\
     sed -i 's/http:\/\/download.icu-project.org\/files\/icu4c\/61.1\/icu4c-61_1-src.tgz/https:\/\/github.com\/unicode-org\/icu\/releases\/download\/release-61-1\/icu4c-61_1-src.tgz/g' /tmp/metapy-src/deps/meta/CMakeLists.txt &&\
