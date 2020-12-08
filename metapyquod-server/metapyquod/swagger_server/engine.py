@@ -1,7 +1,7 @@
 import os
 import metapy
 import pytoml
-from metapy import index
+from metapy import index #pylint: disable=E0611
 
 class Engine:
     __ranker = None
