@@ -1,6 +1,6 @@
 # `metapyquod-dev` - Self-Contained MeTA/metapy development environment
 
-The object of this container is to make getting up and running with [metapy]() as fast and easy as possible.
+The object of this container is to make getting up and running with [metapy](https://github.com/meta-toolkit/metapy) as fast and easy as possible. There are ready-made [images on Docker Hub](https://hub.docker.com/r/sphtkr/metapyquod-dev/tags?page=1&ordering=last_updated) so you do *not* need to build this yourself. Images are also built for 32-bit and 64-bit ARM processors, if you have a Raspberry Pi handy!
 
 ## Quick Start
 
@@ -156,7 +156,7 @@ Unlike Jupyter, however, the address displayed in the container will *not* be ad
 
 ## Advanced Topics
 
-The above documentation covers use with `run.sh` or `run.bat`. Of course, you can use the image to start a container directly, using all the options and customizability that Docker offers. That is largely out of scope of this documentation, but a few scenarios are worth briefly mentioning. For instance, here is the line that runs the container from `run.sh`:
+The above documentation covers use with `run.sh` or `run.bat`. Of course, you can use the image to start a container directly, using all the options and customizability that Docker offers. That is largely out of scope of this documentation, but a few scenarios are worth briefly mentioning. For reference, here is the line that runs the container from `run.sh`:
 
 ```
 docker run --rm -it \
@@ -178,11 +178,11 @@ docker start -ai my-metapy-container
 ```
 (note this specific `create` command forwards *no ports*, and would always be attached to the directory in which it was first `create`d, instead of where it was `start`ed!)
 
-This may be a recipe for tears however, as if you "mess up" this container somehow and can't get back into it, *and* you have put anything into it that you can't reproduce (configuration changes in `/etc`, for example), it may not be easy to extract that data from the container environment--many people (myself included) have started using Docker containers this way and it is not really the way it is intended to be used.
+This may be a recipe for tears however, as if you "mess up" this container somehow and can't get back into it, *and* you have put anything into it that you can't reproduce (configuration changes in `/etc`, for example), it may not be easy to extract that data from the container environment--many people (myself included) have started using Docker containers this way and it is not really the way they are intended to be used.
 
 ### Using Python 3.6
 
-There are currently two "tags", or versions of the image on Docker Hub--`run.sh` and `run.bat` are configured to use `python3.8`, but `python3.6` is available. To switch, all you should have to do is edit your copy of the script to use the `python3.6` tag.
+There are currently [two "tags"](https://hub.docker.com/r/sphtkr/metapyquod-dev/tags?page=1&ordering=last_updated), or versions of the image on Docker Hub--`run.sh` and `run.bat` are configured to use `python3.8`, but `python3.6` is available. To switch, all you should have to do is edit your copy of the script to use the `python3.6` tag.
 
 ### Remote debugging
 
@@ -190,7 +190,7 @@ Instead of using [web_pdb](#using-web_pdb), it should be possible to use a "remo
 
 ### Extending the Image
 
-Instead of creating a persistent container as above, in most cases it would be better to extend the existing image, for instance installing additional python modules or packages. You would do this by creating your own `Dockerfile` and using `metapyquod-dev` in the `FROM` directive. For instance, this creates a derivative image that includes the `less` command in the shell (if you really wanted):
+Instead of creating a persistent container as described above, in most cases it would be better to extend the existing image and create your own, for instance installing additional python modules or packages. You would do this by creating your own `Dockerfile` and using `metapyquod-dev` in the `FROM` directive. For instance, this creates a derivative image that includes the `less` command in the shell (if you really wanted):
 
 ```
 FROM sphtkr/metapyquod-dev:python3.8
