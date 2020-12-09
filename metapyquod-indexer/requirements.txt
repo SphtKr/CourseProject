@@ -1,0 +1,4 @@
+python-magic
+bs4
+pytoml
+metapy
