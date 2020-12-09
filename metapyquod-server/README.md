@@ -54,7 +54,6 @@ By way of overview, there are three main services:
 
 * `/search` - GET or POST
     * Takes parameters for query, top, and skip (for pagination, e.g. top 10, skip 20 gives the third page of ten results)
-    * Can be retrieved via GET or POST
     * Returns a doc_id, a URL, a title, and the ranker's score value for each result
 * `/click` - GET
     * A "clickthrough" handler for gathering implicit feedback
