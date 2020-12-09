@@ -7,7 +7,7 @@ import re
 import argparse
 import magic
 from bs4 import BeautifulSoup
-from metapy import index
+from metapy import index #pylint: disable=E0611
 
 class ScrapedDocument:
     def __init__(self, title, text, mtime, url):
@@ -40,6 +40,7 @@ def main():
                     fullpath = os.path.join(root,f)
                     mtime = os.path.getmtime(fullpath)
                     m = magic.from_file(fullpath, mime=True)
+                    print(fullpath, m)
 
                     # Reconstitute URL...
                     hostandpath = root[len(pdir)+1:]
@@ -55,6 +56,8 @@ def main():
 
                     if(m == "text/html"):
                         doc = slurp_html(fullpath, doc)
+                    if(m == "text/plain"):
+                        doc = slurp_text(fullpath, doc)
 
                     #print(doc.title, doc.url, doc.mtime, doc.text)
 
@@ -180,6 +183,13 @@ def slurp_html(path: str=None, doc: ScrapedDocument=None):
             script.decompose()
 
         doc.text = re.sub('\s+',' ', soup.get_text(separator=' '))
+        return doc
+
+def slurp_text(path: str=None, doc: ScrapedDocument=None):
+    with open(path) as fp:
+        text = ''.join(fp.readlines())
+
+        doc.text = re.sub('\s+',' ', text)
         return doc
 
 if __name__ == '__main__':
