@@ -18,4 +18,4 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 
-ENTRYPOINT ["python3", "indexer.py"]
+ENTRYPOINT ["python3", "metapyquod-indexer"]
