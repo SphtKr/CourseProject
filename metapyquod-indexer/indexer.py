@@ -172,7 +172,7 @@ def slurp_html(path: str=None, doc: ScrapedDocument=None):
         soup = BeautifulSoup(fp, "html.parser")
 
         try:
-            doc.title = str(soup.title.string)
+            doc.title = str(soup.title.string).strip()
         except:
             pass
 
