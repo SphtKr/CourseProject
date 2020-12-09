@@ -1,7 +1,7 @@
 .gitignore
 
 # We're using this now to update the generated code:
-# java -jar swagger-codegen-cli.jar generate -i metapyquod/OAS.yaml -l python-flask -o metapyquod
+# java -jar swagger-codegen-cli.jar generate -i metapyquod-server/OAS.yaml -l python-flask -o metapyquod-server
 
 # So, basically, let codegen update only the models going forward...
 **
