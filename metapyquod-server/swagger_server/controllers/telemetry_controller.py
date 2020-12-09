@@ -14,6 +14,6 @@ def telemetry_stats_get():  # noqa: E501
     :rtype: StatsResult
     """
     statsDict = mainEngine.get_stats()
-    model = StatsResult(num_docs= statsDict['num_docs'], num_terms= statsDict['num_terms'], disk_size= statsDict['disk_size'])
+    model = StatsResult(num_docs= statsDict['num_docs'], num_terms= statsDict['num_terms'])
 
     return model

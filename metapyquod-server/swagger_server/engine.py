@@ -60,6 +60,5 @@ class Engine:
     def get_stats(self):
         return {
             'num_docs': self.__idx.num_docs(),
-            'num_terms': self.__idx.unique_terms(),
-            'disk_size': 0 #TODO: calculate this outside metapy
+            'num_terms': self.__idx.unique_terms()
         }
