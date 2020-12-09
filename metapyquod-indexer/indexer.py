@@ -40,7 +40,7 @@ def main():
                     fullpath = os.path.join(root,f)
                     mtime = os.path.getmtime(fullpath)
                     m = magic.from_file(fullpath, mime=True)
-                    print(fullpath, m)
+                    #print(fullpath, m)
 
                     # Reconstitute URL...
                     hostandpath = root[len(pdir)+1:]
