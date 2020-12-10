@@ -1,5 +1,6 @@
 # `metapyquod-dev` - Self-Contained MeTA/metapy development environment
 
+[<img src="https://img.youtube.com/vi/P4U69kkqC00/0.jpg" data-canonical-src="https://img.youtube.com/vi/P4U69kkqC00/0.jpg" align="right" height="240" width="320">](https://youtu.be/P4U69kkqC00)
 The object of this container is to make getting up and running with [metapy](https://github.com/meta-toolkit/metapy) as fast and easy as possible. There are ready-made [images on Docker Hub](https://hub.docker.com/r/sphtkr/metapyquod-dev/tags?page=1&ordering=last_updated) so you do *not* need to build this yourself. Images are also built for 32-bit and 64-bit ARM processors, if you have a Raspberry Pi handy!
 
 ## Quick Start
