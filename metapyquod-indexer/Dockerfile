@@ -1,6 +1,6 @@
 FROM python:3.6
 
-#RUN mkdir -p /usr/src/app
+VOLUME /var/mirror /var/idx
 WORKDIR /usr/src/app
 
 RUN apt-get update &&\

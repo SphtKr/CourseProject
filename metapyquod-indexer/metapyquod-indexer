@@ -20,12 +20,12 @@ def main():
     parser = init_argparse()
     args = parser.parse_args()
     if args.prefix is None:
-        args.prefix = args.dest_path
+        args.prefix = args.indexpath
 
-    corpus_id = re.sub('[^a-zA-Z0-9_-]','_', args.identifier) #TODO: Get id from args
+    corpus_id = re.sub('[^a-zA-Z0-9_-]','_', args.dataset) #TODO: Get id from args
 
-    if(os.path.exists(args.dest_path) and (not(os.path.isdir(args.dest_path)) or len(os.listdir(args.dest_path)) > 0)):
-        print("ERROR: destination exists and is not an empty directory. Exiting...", file=sys.stderr)
+    if(os.path.exists(args.indexpath) and (not(os.path.isdir(args.indexpath)) or len(os.listdir(args.indexpath)) > 0)):
+        print("ERROR: index path exists and is not an empty directory. Exiting...", file=sys.stderr)
         exit(1)
 
     sham_dat_path,sham_md_path = make_sham_corpus(corpus_id)
@@ -36,8 +36,8 @@ def main():
     # FIFO will never close/run dry... essentially a form of deadlock.
     with open(sham_dat_path,'w') as sham_dat, open(sham_md_path,'w') as sham_md:
         doc_num = 0
-        for protocol in os.listdir(args.mirror_path):
-            pdir = os.path.join(args.mirror_path,protocol)
+        for protocol in os.listdir(args.mirrorpath):
+            pdir = os.path.join(args.mirrorpath,protocol)
             if not(os.path.isdir(pdir)):
                 continue
             for root,dirnames,filenames in os.walk(pdir):
@@ -73,7 +73,7 @@ def main():
                         sham_md.write('\t'.join([re.sub(r'\s+',' ',doc.title), doc.url, str(doc.mtime)]))
                         sham_md.write('\n')
 
-    cleanup_sham_corpus(corpus_id, args.dest_path, args.prefix)
+    cleanup_sham_corpus(corpus_id, args.indexpath, args.prefix)
 
 
 def make_sham_corpus(id: str='sham'):
@@ -158,26 +158,28 @@ def cleanup_sham_corpus(id: str='sham', dest: str=None, prefix: str=None):
 
 def init_argparse() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        usage="%(prog)s [OPTION] mirrorpath dest",
+        usage="%(prog)s [OPTION]",
         description="Build MeTA indexes from wget mirrors."
     )
     parser.add_argument(
         "-v", "--version", action="version",
         version = "MeTAPyquod wget mirror indexer version 0.1.0"
     )
-    parser.add_argument('mirror_path',
-        metavar='mirrorpath',
+    parser.add_argument('-m',
+        '--mirrorpath',
         type=str,
-        help='The path where the root of the mirror is stored. Should contain protocol directories like "http" and "https".')
-    parser.add_argument('dest_path',
-        metavar='dest',
-        type=str,
-        help='The directory location into which the created index will be stored.')
+        default='/var/mirror',
+        help='The path where the root of the mirror is stored. Should contain protocol directories like "http" and "https". Defaults to "/var/mirror".')
     parser.add_argument('-i',
-        '--identifier',
+        '--indexpath',
+        type=str,
+        default='/var/idx',
+        help='The directory location into which the created index will be stored. Defaults to "/var/idx"')
+    parser.add_argument('-d',
+        '--dataset',
         type=str,
         default="dataset",
-        help='The identifier for the index. Default is "dataset"')
+        help='The identifier for the index dataset. Default is "dataset"')
     parser.add_argument('-p',
         '--prefix',
         type=str,
