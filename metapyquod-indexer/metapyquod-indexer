@@ -19,8 +19,14 @@ class ScrapedDocument:
 def main():
     parser = init_argparse()
     args = parser.parse_args()
+    if args.prefix is None:
+        args.prefix = args.dest_path
 
     corpus_id = re.sub('[^a-zA-Z0-9_-]','_', args.identifier) #TODO: Get id from args
+
+    if(os.path.exists(args.dest_path) and (not(os.path.isdir(args.dest_path)) or len(os.listdir(args.dest_path)) > 0)):
+        print("ERROR: destination exists and is not an empty directory. Exiting...", file=sys.stderr)
+        exit(1)
 
     sham_dat_path,sham_md_path = make_sham_corpus(corpus_id)
 
@@ -64,10 +70,10 @@ def main():
                     if(not(doc.text is None)):
                         sham_dat.write(doc.text)
                         sham_dat.write('\n')
-                        sham_md.write('\t'.join([re.sub('\s+',' ',doc.title), doc.url, str(doc.mtime)]))
+                        sham_md.write('\t'.join([re.sub(r'\s+',' ',doc.title), doc.url, str(doc.mtime)]))
                         sham_md.write('\n')
 
-    cleanup_sham_corpus(corpus_id, args.dest_path)
+    cleanup_sham_corpus(corpus_id, args.dest_path, args.prefix)
 
 
 def make_sham_corpus(id: str='sham'):
@@ -100,6 +106,10 @@ metadata = [{name = "title", type = "string"},
     sham_dat_path = os.path.join(sham_path, id, "%s.dat"%(id))
     sham_md_path = os.path.join(sham_path, id, "metadata.dat")
 
+    if(os.path.exists(sham_path)):
+        print("ERROR: Chosen temporary path \"%s\" exists--another indexer may be running for this dataset, or has crashed. Cleanup the temporary path to continue. Exiting..."%sham_path, file=sys.stderr)
+        exit(2)
+
     os.mkdir(sham_path)
     os.mkdir(os.path.join(sham_path, id))
     with open(sham_main_toml_path,'w') as f:
@@ -117,10 +127,10 @@ metadata = [{name = "title", type = "string"},
     return sham_dat_path,sham_md_path
     #with open(sham_dat_path,'w') as sham_dat, open(sham_md_path,'w') as sham_md:
 
-def cleanup_sham_corpus(id: str='sham', dest: str=None):
+def cleanup_sham_corpus(id: str='sham', dest: str=None, prefix: str=None):
     sham_path = os.path.join("/tmp",id)
     sham_main_toml_path = os.path.join(sham_path, "%s.toml"%(id))
-    sham_line_toml_path = os.path.join(sham_path, id, "line.toml")
+    #sham_line_toml_path = os.path.join(sham_path, id, "line.toml")
     sham_dat_path = os.path.join(sham_path, id, "%s.dat"%(id))
     sham_md_path = os.path.join(sham_path, id, "metadata.dat")
     
@@ -131,7 +141,7 @@ def cleanup_sham_corpus(id: str='sham', dest: str=None):
 
     with open(sham_main_toml_path,'r') as f:
         config_toml = ''.join(f.readlines())
-    config_toml = re.sub('(prefix|index|stop-words) = ".', "\\1 = \"%s"%(dest), config_toml)
+    config_toml = re.sub('(prefix|index|stop-words) = ".', "\\1 = \"%s"%(prefix), config_toml)
     
     os.remove(sham_main_toml_path)
     os.remove(sham_md_path)
@@ -168,6 +178,13 @@ def init_argparse() -> argparse.ArgumentParser:
         type=str,
         default="dataset",
         help='The identifier for the index. Default is "dataset"')
+    parser.add_argument('-p',
+        '--prefix',
+        type=str,
+        default=None,
+        help="""A path written into the config.toml's "prefix" value (and elsewhere) that relates to where the index will be 
+used, if that is different from where it is written. Defaults to the value of "dest". Use this if you will move the index 
+to another path before using it or if it will appear to be at a different path by the reading process.""")
     return parser
 
 def slurp_html(path: str=None, doc: ScrapedDocument=None):
