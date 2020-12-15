@@ -48,7 +48,7 @@ There is a valid question, "Why would we waste space by downloading the content 
 ## Usage
 
 ```
-#> docker run metapyquod-indexer --help
+#> docker run --rm sphtkr/metapyquod-indexer --help
 usage: metapyquod-indexer [OPTION]
 
 Build MeTA indexes from wget mirrors.
@@ -83,14 +83,14 @@ So, for the above example `wget` command, which places the downloaded data in `.
 
 ```sh
 #> mkdir output
-#> docker -v `pwd`/data:/var/mirror -v `pwd`/output:/var/idx metapyquod-indexer
+#> docker run --rm -v `pwd`/data:/var/mirror -v `pwd`/output:/var/idx sphtkr/metapyquod-indexer
 ```
 
 If you have multiple mirrrors and want to generate multiple indexes side-by-side, you can also do that in a slightly different way:
 
 ```sh
-#> docker -v `pwd`/data1:/var/mirror -v `pwd`:/var/idx metapyquod-indexer -i /var/idx/index1
-#> docker -v `pwd`/data2:/var/mirror -v `pwd`:/var/idx metapyquod-indexer -i /var/idx/index2
+#> docker run --rm -v `pwd`/data1:/var/mirror -v `pwd`:/var/idx sphtkr/metapyquod-indexer -i /var/idx/index1
+#> docker run --rm -v `pwd`/data2:/var/mirror -v `pwd`:/var/idx sphtkr/metapyquod-indexer -i /var/idx/index2
 ```
 
 ...which will actually create non-existent directories `index1` and `index2` in the current working directory.
