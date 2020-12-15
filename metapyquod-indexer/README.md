@@ -142,3 +142,13 @@ filter = "default-unigram-chain"
 Yes, it can be somewhat. The `metapyquod-indexer` Python script itself can be very effectively used directly, so if you have an environment with the dependencies working then feel free to use the script directly if that suits your needs. There are basically two reasons it makes sense to package this as a container:
 1. All the dependencies are provided without mucking with your native Python environment or with venvs.
 2. It may be advantageous to have this run in a container if you are using it alongside some other container(s) (such as [metapyquod-server](https://github.com/sphtkr/MeTAPyquod/metapyquod-server)) and you want your index to be made available to it using [Named Volumes](https://boxboat.com/2016/06/18/docker-data-containers-and-named-volumes/), or some other container storage driver, or cloud service, or similar scenarios.
+
+## Future direction / Improvements
+
+### Use FIFOs
+
+At present, `metapyquod-indexer` creates a MeTA "Line Corpus" and writes the text contents of the corpus (and metadata file) to disk, and then MeTA reads the files to create the index. This is both time and space inefficient and the IO subsystem becomes a bottleneck. The plan was/is to use `os.mkfifo()` and fool MeTA's line corpus reader into reading from FIFOs instead of real files, fork the call to `make_inverted_index()` and thus prevent the writing of the whole corpus to disk a second time. This introduces complexity to the implementation however and was pushed off to a later iteration.
+
+### Allow forward index creation
+
+At present only an inverted index is created, but it should be possible to provide switches to the program which would create a forward index instead (or in addition).
