@@ -146,7 +146,13 @@ def cleanup_sham_corpus(id: str='sham', dest: str=None, prefix: str=None):
     os.remove(sham_main_toml_path)
     os.remove(sham_md_path)
     os.remove(sham_dat_path)
-    shutil.move(sham_path, dest)
+    if(os.path.exists(dest)):
+        shutil.move(os.path.join(sham_path, id), dest)
+        shutil.move(os.path.join(sham_path, "lemur-stopwords.txt"), dest)
+        shutil.move(os.path.join(sham_path, "idx"), dest)
+        os.rmdir(sham_path)
+    else:
+        shutil.move(sham_path, dest)
 
     with open(os.path.join(dest,"config.toml"),'w') as f:
         f.write(config_toml)
