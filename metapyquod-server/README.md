@@ -1,5 +1,7 @@
 # `metapyquod-server` Canned prototype search microservice using MeTA/metapy
 
+[<img src="https://img.youtube.com/vi/CXgVN4fOjvk/0.jpg" data-canonical-src="https://img.youtube.com/vi/CXgVN4fOjvk/0.jpg" alt="metapyquod-indexer and metapyquod-server demo video" align="right" height="240" width="320">](https://youtu.be/CXgVN4fOjvk)
+
 ## Overview
 
 This container implements a minimal but functional search service as a REST API, which can be used as a base for rapid prototyping of either a search portal web site or mobile app (or other client). It uses the MeTA toolkit and metapy bindings, so may be suitable for research or prototyping of new rankers or techniques via that library.
