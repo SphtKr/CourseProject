@@ -1,5 +1,6 @@
 # `metapyquod-indexer` - Easily prepare MeTA indexes with wget
 
+[<img src="https://img.youtube.com/vi/CXgVN4fOjvk/0.jpg" data-canonical-src="https://img.youtube.com/vi/CXgVN4fOjvk/0.jpg" alt="metapyquod-indexer and metapyquod-server demo video" align="right" height="240" width="320">](https://youtu.be/CXgVN4fOjvk)
 This tool makes it relatively easy to create a MeTA index from a web site by using [wget](https://www.gnu.org/software/wget/)'s recursive retrieval features. It will create an index with metadata fields capturing:
 * The (reconstructed) original URL of the retrieved page
 * The title of the page (if HTML, parsed with Beautiful Soup 4)
